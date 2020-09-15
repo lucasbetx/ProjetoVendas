@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebSales.Models;
 using WebSales.Data;
-
+using Microsoft.EntityFrameworkCore;
+using WebSales.Services.Exceptions;
 
 namespace WebSales.Services
 {
@@ -30,7 +31,8 @@ namespace WebSales.Services
 
         public Seller FindById(int id)
         {
-            return _context.Seller.FirstOrDefault(obj => obj.Id == id);
+            return _context.Seller.Include(obj => obj.Departament).FirstOrDefault(obj => obj.Id == id);
+            //aqui ele traz o departamento associado ao vendedor pelo id
         }
 
         public void Remove(int id)
@@ -40,5 +42,22 @@ namespace WebSales.Services
             _context.SaveChanges();
         }
 
+        public void Update(Seller obj)
+        {
+            if (!_context.Seller.Any(x => x.Id == obj.Id))
+            {
+                throw new NotFoundException("Id not found");
+            }
+
+            try
+            {
+                _context.Update(obj);
+                _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                throw new DbConcurrecyException(e.Message);
+            }
+        }
     }
 }
