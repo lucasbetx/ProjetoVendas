@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using WebSales.Models.Enums;
@@ -8,7 +9,10 @@ namespace WebSales.Models
 {
     public class SalesRecord
     {
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public int Id { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:F2}")]
         public DateTime Date { get; set; }
         public double Amount { get; set; }
         public SaleStatus Status { get; set; }
