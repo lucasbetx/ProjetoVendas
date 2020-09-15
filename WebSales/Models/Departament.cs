@@ -30,7 +30,7 @@ namespace WebSales.Models
 
         public double TotalSales(DateTime initial, DateTime final)
         {
-            return Sellers.Sum(seller => seller.TotalSales(initial,final));
+            return Sellers.Sum(seller => seller.TotalSales(initial, final));
         }
     }
 }
